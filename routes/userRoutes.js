@@ -4,7 +4,6 @@ const userRoutes = express();
 const path = require('path');
 const bodyParser = require('body-parser');
 const multer = require('multer');
-
 const userController = require("../controllers/userController");
 
 

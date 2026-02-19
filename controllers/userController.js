@@ -1,4 +1,18 @@
 const User = require("../models/userModel")
+const bcrypt = require('bcrypt')
+
+const securePassword = async(password)=>{
+
+    try{
+
+        const hashpassword = await bcrypt.hash(password,10)
+        return hashpassword
+
+
+    }catch(error){
+        console.log(error.message)
+    }
+}
 
 const loadRegister = async(req,res)=>{
     try{
@@ -14,11 +28,12 @@ const loadRegister = async(req,res)=>{
 
 const insertUser = async(req,res)=>{
     try{
+        const spassword = await securePassword(req.body.password);
         const user = new User({
             name:req.body.name,
             email:req.body.email,
             mobile:req.body.mno,
-            password:req.body.password,
+            password: spassword,
             image:req.file.filename,
             is_Admin:0,
             is_verified:0
