@@ -31,7 +31,7 @@ userRoutes.set('views', './views/user');
 
 userRoutes.get("/register", userController.loadRegister);
 userRoutes.post( '/register',upload.single('image'),userController.insertUser);
-   
+userRoutes.get("/verify",userController.verifyMail);
     
     
 

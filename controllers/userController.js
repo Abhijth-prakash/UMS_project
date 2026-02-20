@@ -1,5 +1,44 @@
 const User = require("../models/userModel")
 const bcrypt = require('bcrypt')
+const nodemailer = require('nodemailer')
+const config = require("../config/secretconfig")
+
+
+const sendVerifyMail = async(name,email,user_id)=>{
+    try{
+        const transporter = nodemailer.createTransport({
+
+            secure:false,
+            host:'smtp.gmail.com',
+            port:587,
+            requireTLS:true,
+            auth:{
+                user: config.gMail,
+                pass: config.gPass
+            }
+
+        });
+        
+        const mailOptions ={
+            from: config.gMail,
+            to:email,
+            subject:'For verify mail',
+            html: '<p>Hi ' + name + ', please click here to <a href="http://localhost:3000/verify?id=' + user_id + '">Verify</a> your mail.</p>'
+        }
+
+        transporter.sendMail(mailOptions,(error,info)=>{
+            if(error){
+                console.log(error);
+            }else{
+                console.log("email has been sent:-",info.response);
+            }
+        })
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
+
 
 const securePassword = async(password)=>{
 
@@ -40,7 +79,7 @@ const insertUser = async(req,res)=>{
         });
         const userData = await user.save();
         if(userData){
-            res.render('registration',{message:"registartion successfull"})
+           sendVerifyMail(req.body.name, req.body.email, userData._id);
         }else{
             res.render("registration",{message:"registration failed"})
         }
@@ -51,6 +90,23 @@ const insertUser = async(req,res)=>{
 }
 
 
+const verifyMail = async(req,res)=>{
+    try{
+    const updateInfo = await User.updateOne(
+      { _id: req.query.id }, { $set: { is_verified: 1 } }   
+    );
+
+    console.log(updateInfo);
+
+    res.render("email_verified");
+
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
 module.exports={
-    loadRegister,insertUser
+    loadRegister,
+    insertUser,
+    verifyMail
 }
