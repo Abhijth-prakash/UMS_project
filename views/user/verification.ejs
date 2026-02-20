@@ -1,6 +1,6 @@
 <%- include("../layouts/header.ejs") %>
 
-<h1>login</h1>
+<h1>verify email</h1>
 
 
 
@@ -8,23 +8,14 @@
   <h4 style="color:rgb(0, 0, 0);"><%= message %></h4>
 <% } %>
 
-<form action="/login" method="post">
+<form action="" method="post">
 
     <input type="email" name="email"  placeholder="email" required>
     <br><br>
     <input type="password" name="password" placeholder="password" required>
     <br><br>
-    <input type="submit" value="Login">
+    <input type="submit" value="Verify">
 </form>
-
-<a href="/forget"> forget password</a> 
-<br><br>
-<a href="/verification">verification</a> 
-
-
-
-
-
 
 
 

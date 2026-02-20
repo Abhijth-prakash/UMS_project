@@ -35,4 +35,8 @@ userRoutes.post('/forget',userController.forgetPassword)
 userRoutes.get('/password_reset',auth.isLogout,userController.passwordReset)
 userRoutes.post('/password_reset',auth.isLogout,userController.updatingPassword)
 
+userRoutes.get('/verification',userController.verification)
+userRoutes.post('/verification',userController.verificationLogic)
+userRoutes.get('/reverification',userController.reverifyMail)
+
 module.exports = userRoutes;

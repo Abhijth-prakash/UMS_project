@@ -292,7 +292,95 @@ const updatingPassword = async(req,res)=>{
 }
 
 
+//if the user failed to verify fist time 
+const  verification = async(req,res)=>{
+    try{
+        res.render('verification')
 
+    }catch(error){
+
+    }
+}
+
+//reverfication logic
+
+const verificationLogic = async(req,res)=>{
+    try{
+        const email = req.body.email
+        const password = req.body.password
+        const checkUser = await User.findOne({email:email})
+        if(checkUser){ 
+            const passVerify = await bcrypt.compare(password,checkUser.password)
+            if(passVerify){
+            reverficationMail(checkUser.name,email,checkUser._id)
+            res.render('verification',{message:"please check your inbox and verify your mail"})                
+            }else{
+            res.render('verification',{message:"email and password is incorrect"})     
+            }
+                       
+        }else{
+            res.render('verification',{message:"email and password is incorrect"})
+        }
+        
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
+//reverification mail
+const reverficationMail = async(name,email,user_id)=>{
+
+      try{
+        const transporter = nodemailer.createTransport({
+
+            secure:false,
+            host:'smtp.gmail.com',
+            port:587,
+            requireTLS:true,
+            auth:{
+                user: config.gMail,
+                pass: config.gPass
+            }
+
+        });
+        
+        const mailOptions ={
+            from: config.gMail,
+            to:email,
+            subject:'For verify mail',
+            html: '<p>Hi ' + name + ', please click here to <a href="http://localhost:3000/verify?id=' + user_id + '">Verify</a> your mail.</p>'
+        }
+
+        transporter.sendMail(mailOptions,(error,info)=>{
+            if(error){
+                console.log(error);
+            }else{
+                console.log("email has been sent:-",info.response);
+            }
+        })
+    }catch(error){
+        console.log(error.message)
+    }
+
+
+}
+
+//reverfication
+
+const reverifyMail = async(req,res)=>{
+    try{
+    const updateInfo = await User.updateOne(
+      { _id: req.query.id }, { $set: { is_verified: 1 } }   
+    );
+
+    console.log(updateInfo);
+
+    res.render("email_verified");
+
+    }catch(error){
+        console.log(error.message)
+    }
+}
 
 
  
@@ -308,7 +396,9 @@ module.exports={
     forgetPage,
     passwordResetMail,
     passwordReset,
-    updatingPassword
-    
-
+    updatingPassword,
+    verification,
+    verificationLogic,
+    reverficationMail,
+    reverifyMail
 }
