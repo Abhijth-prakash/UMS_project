@@ -2,6 +2,7 @@ const User = require("../models/userModel")
 const bcrypt = require('bcrypt')
 const nodemailer = require('nodemailer')
 const config = require("../config/secretconfig")
+const randomString = require('randomstring')
 
 //verification mail
 
@@ -141,11 +142,11 @@ const verifyLogin = async(req,res)=>{
                 }
 
            }else{
-             res.render('login',{message:"Email and passoword is incorrect"});
+             res.render('login',{message:"Email and password is incorrect"});
            }
 
        }else{
-          res.render('login',{message:"Email and passoword is incorrect"});
+          res.render('login',{message:"Email and password is incorrect"});
        }
 
     }catch(error){
@@ -165,6 +166,135 @@ const Home = async(req,res)=>{
 
 
 
+
+
+//forget page
+
+const forgetPage = async(req,res)=>{
+    try{
+        res.render('forget')
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
+//forget password logic
+const forgetPassword = async(req,res)=>{
+    try{
+       const email = req.body.email.trim()
+       const userData =  await User.findOne({email:email})
+       if(userData){
+
+          if(userData.is_verified ===0){
+            res.render('forget',{message:"please verify email"})
+
+          }else{
+
+                const randomstring = randomString.generate();
+                const updatedData = await User.updateOne({email:email},{$set:{token:randomstring}})
+                passwordResetMail(userData.name,userData.email,randomstring)
+                res.render('forget',{message:"please check your mail"})
+          }
+
+
+       }else{
+        res.render('forget',{message:"user email is incorrect"})
+       }
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
+
+
+// password reseting email
+
+const passwordResetMail = async(name,email,token)=>{
+    try{
+        const transporter = nodemailer.createTransport({
+
+            secure:false,
+            host:'smtp.gmail.com',
+            port:587,
+            requireTLS:true,
+            auth:{
+                user: config.gMail,
+                pass: config.gPass
+            }
+
+        });
+        
+        const mailOptions ={
+            from: config.gMail,
+            to:email,
+            subject:'For Reset passwprd',
+           html: '<p>Hi ' + name + ', please click here to <a href="http://localhost:3000/password_reset?token=' + token + '">Reset</a> your password.</p>'}
+    
+        transporter.sendMail(mailOptions,(error,info)=>{
+            if(error){
+                console.log(error);
+            }else{
+                console.log("email has been sent:-",info.response);
+            }
+        })
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
+
+
+// reset password page
+
+const passwordReset = async (req, res) => {
+  try {
+    const token = req.query.token;
+
+    const tokenData = await User.findOne({ token: token });
+
+    if (tokenData) {
+      return res.render('password_reset', {
+        user_id: tokenData._id,
+        token: token
+      });
+    } else {
+      return res.render('password_reset', {
+        message: "Token is invalid",
+        user_id: null,
+        token: null
+      });
+    }
+
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+
+
+// updating password
+
+const updatingPassword = async(req,res)=>{
+    try{
+        console.log(req.body)
+        const password = req.body.password
+        const user_id = req.body.user_id
+        
+
+        const secure_Password =  await securePassword(password)
+
+       const updatedData = await User.findByIdAndUpdate({_id:user_id},{$set:{password:secure_Password,token:''}})
+        res.redirect("/")
+
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
+
+
+
+
  
 
 module.exports={
@@ -173,6 +303,12 @@ module.exports={
     verifyMail,
     userLogin,
     verifyLogin,
-    Home
+    Home,
+    forgetPassword,
+    forgetPage,
+    passwordResetMail,
+    passwordReset,
+    updatingPassword
+    
 
 }
