@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const nodemailer = require('nodemailer')
 const config = require("../config/secretconfig")
 
+//verification mail
 
 const sendVerifyMail = async(name,email,user_id)=>{
     try{
@@ -39,7 +40,8 @@ const sendVerifyMail = async(name,email,user_id)=>{
 }
 
 
-
+    
+//hashing password
 const securePassword = async(password)=>{
 
     try{
@@ -65,6 +67,7 @@ const loadRegister = async(req,res)=>{
     }
 }
 
+//registering user
 const insertUser = async(req,res)=>{
     try{
         const spassword = await securePassword(req.body.password);
@@ -89,7 +92,7 @@ const insertUser = async(req,res)=>{
     }
 }
 
-
+//updating verification    
 const verifyMail = async(req,res)=>{
     try{
     const updateInfo = await User.updateOne(
@@ -105,8 +108,69 @@ const verifyMail = async(req,res)=>{
     }
 }
 
+
+//user login
+
+const userLogin = async(req,res)=>{
+    try{
+
+        res.render('login')
+
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
+
+//verify login
+
+const verifyLogin = async(req,res)=>{
+    try{    
+        const email = req.body.email.trim();
+        const password = req.body.password.trim();
+       const userData =  await User.findOne({email:email});
+       if(userData){
+           const passMatch = await bcrypt.compare(password,userData.password)
+           if(passMatch){
+                if(userData.is_verified ===0){
+                    res.render('login',{message:"please verify your mail"})
+                }else{
+                    res.redirect('/home')
+                }
+
+           }else{
+             res.render('login',{message:"Email and passoword is incorrect"});
+           }
+
+       }else{
+          res.render('login',{message:"Email and passoword is incorrect"});
+       }
+
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
+//home page
+
+const Home = async(req,res)=>{
+    try{
+        res.render('home')
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
+
+
+ 
+
 module.exports={
     loadRegister,
     insertUser,
-    verifyMail
+    verifyMail,
+    userLogin,
+    verifyLogin,
+    Home
+
 }

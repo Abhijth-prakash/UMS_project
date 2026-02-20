@@ -32,8 +32,11 @@ userRoutes.set('views', './views/user');
 userRoutes.get("/register", userController.loadRegister);
 userRoutes.post( '/register',upload.single('image'),userController.insertUser);
 userRoutes.get("/verify",userController.verifyMail);
+userRoutes.get("/",userController.userLogin)
+userRoutes.get("/login",userController.userLogin)
+userRoutes.post("/login",userController.verifyLogin)
     
-    
+userRoutes.get('/home',userController.Home)    
 
 
 
