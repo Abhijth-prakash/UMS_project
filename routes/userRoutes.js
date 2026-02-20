@@ -1,11 +1,12 @@
 const express = require("express");
 const userRoutes = express(); 
-
+const config = require('../config/secretconfig')
 const path = require('path');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const userController = require("../controllers/userController");
-
+const session = require('express-session')
+userRoutes.use(session({secret:config.sessionSecret}))
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {

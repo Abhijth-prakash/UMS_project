@@ -83,6 +83,7 @@ const insertUser = async(req,res)=>{
         const userData = await user.save();
         if(userData){
            sendVerifyMail(req.body.name, req.body.email, userData._id);
+            res.render("registration",{message:"registration succesully, please verify email"})
         }else{
             res.render("registration",{message:"registration failed"})
         }
@@ -135,6 +136,7 @@ const verifyLogin = async(req,res)=>{
                 if(userData.is_verified ===0){
                     res.render('login',{message:"please verify your mail"})
                 }else{
+                    req.session.user_id = userData._id;
                     res.redirect('/home')
                 }
 
