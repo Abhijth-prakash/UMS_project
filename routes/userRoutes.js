@@ -9,7 +9,7 @@ const auth = require('../middileware/auth')
 
 
 
-
+userRoutes.use(express.static('public'))
 userRoutes.use(session({secret: "mysessionsecret",resave: false,saveUninitialized: false}));
 userRoutes.use(bodyParser.json());
 userRoutes.use(bodyParser.urlencoded({ extended: true }));
@@ -37,6 +37,7 @@ userRoutes.post('/password_reset',auth.isLogout,userController.updatingPassword)
 
 userRoutes.get('/verification',userController.verification)
 userRoutes.post('/verification',userController.verificationLogic)
-userRoutes.get('/reverification',userController.reverifyMail)
+
+
 
 module.exports = userRoutes;

@@ -5,6 +5,31 @@
 <h1>home page</h1>
 
 
+<h1 style="color:red"> welcome,<%= user.name%> </h1>
+
+<table>
+    <tr>
+        <td><img src="userImages/<%= user.image%>" alt="<%= user.image%>"></td>
+    </tr>
+    <tr>
+        <td>email</td>
+        <td><%= user.email%></td>
+    </tr>
+    <tr>
+        <td>mobile</td>
+        <td><%= user.mobile%>></td>
+    </tr>
+    <tr>
+        <td>Verified</td>
+        <td><% if(user.is_verified === 1){
+            %>
+            <p>True</p>
+            <%
+        }%></td>
+    </tr>
+</table>
+
+
 
 
 
