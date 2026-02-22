@@ -39,6 +39,7 @@ userRoutes.post('/password_reset',auth.isLogout,userController.updatingPassword)
 userRoutes.get('/verification',userController.verification)
 userRoutes.post('/verification',userController.verificationLogic)
 
-
+userRoutes.get('/edit',auth.isLogin,userController.updatePage)
+userRoutes.post('/edit',upload.single('image'),userController.updateLogic)
 
 module.exports = userRoutes;

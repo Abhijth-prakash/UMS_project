@@ -1,0 +1,32 @@
+<%- include("../layouts/header.ejs") %>
+
+<h1>Update profile</h1>
+
+<img src="userImages/<%=user.image%>" alt="">
+
+<form action="/edit" method="post" enctype="multipart/form-data">
+
+  <input type="text" name="name"  value ="<%=user.name%>" placeholder="Enter name" required>
+  <br><br>
+
+  <input type="hidden" name="user_id" value="<%=user._id%>">
+
+ <input type="email" name="email"  value ="<%=user.email%>" placeholder="Enter email" required>
+  <br><br>
+
+  <input type="text" name="mobile"  value ="<%=user.mobile%>" placeholder="Enter mobileNo" required>
+  <br><br>
+
+  <input type="file" name="image" required>
+  <br><br>
+
+
+  <input type="submit" value="Update">
+
+</form>
+
+<% if (typeof message !== 'undefined') { %>
+  <p style="color:green;"><%= message %></p>
+<% } %>
+
+<%- include("../layouts/footer.ejs") %>
