@@ -28,6 +28,7 @@ userRoutes.get("/login",auth.isLogout,userController.userLogin)
 userRoutes.post("/login",userController.verifyLogin)
     
 userRoutes.get('/home',auth.isLogin,userController.Home)  
+userRoutes.get('/logout',auth.isLogin,userController.logoutUser)
 
 
 userRoutes.get('/forget',auth.isLogout,userController.forgetPage)

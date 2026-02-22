@@ -124,6 +124,7 @@ const userLogin = async(req,res)=>{
 }
 
 
+
 //verify login
 
 const verifyLogin = async(req,res)=>{
@@ -152,6 +153,18 @@ const verifyLogin = async(req,res)=>{
     }catch(error){
         console.log(error.message)
     }
+}
+
+
+//user logout 
+
+const logoutUser = async (req, res) => {
+  try {
+    req.session.user_id = false;
+    res.redirect('login')
+  } catch (error) {
+    console.log(error.message);
+  }
 }
 
 //home page
@@ -339,6 +352,7 @@ module.exports={
     userLogin,
     verifyLogin,
     Home,
+    logoutUser,
     forgetPassword,
     forgetPage,
     passwordResetMail,
