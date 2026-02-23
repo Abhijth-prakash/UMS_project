@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const upload = require('../multer/multer');
 const userController = require("../controllers/userController");
 const session = require('express-session')
-const auth = require('../middileware/auth')
+const auth = require('../middleware/auth')
 
 
 

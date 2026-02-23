@@ -1,0 +1,28 @@
+<%- include("../layouts/header.ejs") %>
+
+<h1> this is admin forget password page </h1>
+
+
+
+<% if (typeof message !== 'undefined') { %>
+  <h4 style="color:rgb(0, 0, 0);"><%= message %></h4>
+<% } %>
+
+<form action="/admin/passforget" method="POST">
+
+    <input type="email" name="email"  placeholder="email" required>
+    <br><br>
+    <input type="submit" value="Reset Link" >
+</form>
+
+
+
+
+
+
+
+
+
+
+
+<%- include("../layouts/footer.ejs") %>
