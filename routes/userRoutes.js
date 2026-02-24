@@ -42,4 +42,7 @@ userRoutes.post('/verification',userController.verificationLogic)
 userRoutes.get('/edit',auth.isLogin,userController.updatePage)
 userRoutes.post('/edit',upload.single('image'),userController.updateLogic)
 
+
+
+
 module.exports = userRoutes;

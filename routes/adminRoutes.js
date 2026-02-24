@@ -18,12 +18,15 @@ adminRoutes.set('views','./views/admin')
 
 
 adminRoutes.get('/home',auth.isLogin,adminController.dashBoard)
+adminRoutes.get('/dashboard',auth.isLogin,adminController.showUsers)
 adminRoutes.get("/",auth.isLogout,adminController.adminLogin)
 adminRoutes.post("/",adminController.verifyLogin)
 adminRoutes.get('/logout',auth.isLogin,adminController.logout)
 
 adminRoutes.get('/passforget',auth.isLogout,adminController.forgetPage)
 adminRoutes.post('/passforget',adminController.forgetVerify)
+adminRoutes.get('/forgetpassword',auth.isLogout,adminController.forgetLogic)
+adminRoutes.post('/forgetpassword',adminController.updatePass)
 
 
 

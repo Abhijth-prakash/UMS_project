@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt")
 const randomstring = require('randomstring')
 const config = require('../config/secretconfig')
 const nodemailer = require('nodemailer')
+const session = require("express-session")
 
 
 
@@ -27,7 +28,7 @@ const passwordMail = async(name,email,token)=>{
             from: config.gMail,
             to:email,
             subject:'For Reset passwprd',
-           html: '<p>Hi ' + name + ', please click here to <a href="http://localhost:3000/admin/forget?token=' + token + '">Reset</a> your password.</p>'}
+           html: '<p>Hi ' + name + ', please click here to <a href="http://localhost:3000/admin/forgetpassword?token=' + token + '">Reset</a> your password.</p>'}
     
         transporter.sendMail(mailOptions,(error,info)=>{
             if(error){
@@ -41,6 +42,20 @@ const passwordMail = async(name,email,token)=>{
     }
 }
 
+
+//hashing password
+const securingPassword = async(password)=>{
+
+    try{
+
+        const hashpassword = await bcrypt.hash(password,10)
+        return hashpassword
+
+
+    }catch(error){
+        console.log(error.message)
+    }
+}
 
 
 
@@ -106,7 +121,9 @@ const logout = async(req,res)=>{
 
 const dashBoard = async(req,res)=>{
     try{
-        res.render('home')
+
+        const userData = await User.findById({_id:req.session.user_id})
+        res.render('home',{admin:userData})
     }catch(error){
         console.log(error.message)
     }
@@ -158,13 +175,72 @@ const forgetVerify = async(req,res)=>{
     }
 }
 
+
+//forget logic
+
+const forgetLogic = async(req,res)=>{
+    try{
+        const token = req.query.token
+        const userData  = await User.findOne({token:token})
+        if(userData){
+            res.render('newpassword',{user_id:userData._id})
+        }else{
+            res.error(404)
+        }
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
+//update password
+
+
+const updatePass = async(req,res)=>{
+    try{
+
+        const id = req.body.user_id
+        const password = req.body.password
+        const userData = await User.findOne({_id:id})
+        if(userData){
+            const spassword = await securingPassword(password)
+            const updatedData = await User.findByIdAndUpdate({_id:userData._id},{$set:{password:spassword,token:""}})
+            res.redirect('/admin')
+
+        }else{
+            res.error(404)
+        }
+
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
+
+
+//dashboard show users
+
+const showUsers = async(req,res)=>{
+    try{
+        res.render('dashboard')
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
+
+
 module.exports={
     adminLogin,
     verifyLogin,
     dashBoard,
     logout,
     forgetPage,
-    forgetVerify
+    forgetVerify,
+    forgetLogic,
+    updatePass,
+    showUsers
+    
+    
     
     
 }
