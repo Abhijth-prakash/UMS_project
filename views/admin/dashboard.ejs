@@ -1,9 +1,64 @@
 <%- include("../layouts/header.ejs") %>
 
-<h1>dashboard</h1>
-
-<a href="/admin/home">GO to Home</a>
+<h1>Dashboard</h1>
 
 
+
+
+<a href="/admin/newuser">Add New User</a>
+
+<br><br>
+
+<table width="50%" border="1">
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Mobile</th>
+        <th>Image</th>
+        <th>Verified</th>
+        <th>Actions</th>
+    </tr>
+
+    <% if (users.length > 0) { %>
+
+        <% for (let i = 0; i < users.length; i++) { %>
+            <tr>
+                <td><%= users[i].name %></td>
+                <td><%= users[i].email %></td>
+                <td><%= users[i].mobile %></td>
+                <td>
+                    <img src="/userImages/<%= users[i].image %>" width="60">
+                </td>
+                <td>
+                    <%= users[i].is_verified ? "Yes" : "No" %>
+                </td>
+                <td>
+                    <a href="/admin/edituser?id=<%=users[i]._id%>">Edit User</a>
+                    <a href="/admin/deleteuser?id=<%=users[i]._id%>">Delete User</a>
+                </td>
+            </tr>
+        <% } %>
+
+    <% } else { %>
+
+        <tr>
+            <td colspan="5">Users not found</td>
+        </tr>
+
+    <% } %>
+</table>
+
+<br>
+
+<% if (typeof message !== 'undefined') { %>
+  <h4 style="color:rgb(255, 0, 0);"><%= message %></h4>
+<% } %>
+
+
+
+
+
+
+<a href="/admin/home">Go to Home</a>
 
 <%- include("../layouts/footer.ejs") %>

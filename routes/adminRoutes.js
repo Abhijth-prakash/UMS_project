@@ -5,8 +5,9 @@ const session = require("express-session")
 const config = require('../config/secretconfig')
 const bodyParser = require("body-parser")
 const auth = require('../middleware/adminAuth')
+const upload = require('../multer/multer')
 
-
+adminRoutes.use(express.static('public'))
 adminRoutes.use(session({secret: "mysessionsecret",resave: false,saveUninitialized: false}));
 adminRoutes.use(bodyParser.json());
 adminRoutes.use(bodyParser.urlencoded({ extended: true }));
@@ -28,10 +29,13 @@ adminRoutes.post('/passforget',adminController.forgetVerify)
 adminRoutes.get('/forgetpassword',auth.isLogout,adminController.forgetLogic)
 adminRoutes.post('/forgetpassword',adminController.updatePass)
 
+adminRoutes.get('/newuser',auth.isLogin,adminController.addNewUserPage)
+adminRoutes.post('/newuser',upload.single('image'),adminController.addNewUserlogic)
 
+adminRoutes.get('/edituser',auth.isLogin,adminController.editUser)
+adminRoutes.post('/edituser',auth.isLogin,adminController.updatingUser)
 
-
-
+adminRoutes.get('/deleteuser',auth.isLogin,adminController.deleteUser)
 
 
 

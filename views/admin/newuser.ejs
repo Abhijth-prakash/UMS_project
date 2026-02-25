@@ -1,0 +1,35 @@
+<%- include("../layouts/header.ejs") %>
+
+
+<h1>this is new user page</h1>
+
+<form action="/admin/newuser" method="post" enctype="multipart/form-data">
+
+  <input type="text" name="name" placeholder="name" required>
+  <br><br>
+
+  <input type="email" name="email" placeholder="email" required>
+  <br><br>
+
+  <input type="number" name="mno" placeholder="mobile" required>
+  <br><br>
+
+  <input type="file" name="image" required>
+  <br><br>
+
+  <input type="password" name="password" placeholder="password" required>
+  <br><br>
+
+  <input type="submit" value="Add user">
+
+</form>
+
+<a href="/admin/dashboard">dashboard</a>
+
+
+<% if (typeof message !== 'undefined') { %>
+  <h4 style="color:rgb(255, 0, 0);"><%= message %></h4>
+<% } %>
+
+
+<%- include("../layouts/footer.ejs") %>

@@ -7,6 +7,57 @@ const session = require("express-session")
 
 
 
+
+//verification mail
+
+const verificaionMail = async(name,email,user_id)=>{
+    try{
+        const transporter = nodemailer.createTransport({
+
+            secure:false,
+            host:'smtp.gmail.com',
+            port:587,
+            requireTLS:true,
+            auth:{
+                user: config.gMail,
+                pass: config.gPass
+            }
+
+        });
+        
+        const mailOptions ={
+            from: config.gMail,
+            to:email,
+            subject:'Admin added you please verify your mail',
+           html: `
+    <p>Hi ${name},</p>
+
+    <p>Please click below to verify your email:</p>
+
+    <a href="http://localhost:3000/verify?id=${user_id}">
+        Verify Email
+    </a>
+
+    <br><br>
+
+    <p>Your username: <b>${name}</b></p>
+
+    <p>If you did not create this account, ignore this email.</p>
+`
+        }
+
+        transporter.sendMail(mailOptions,(error,info)=>{
+            if(error){
+                console.log(error);
+            }else{
+                console.log("email has been sent:-",info.response);
+            }
+        })
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
 //reset password mail
 
 const passwordMail = async(name,email,token)=>{
@@ -185,7 +236,7 @@ const forgetLogic = async(req,res)=>{
         if(userData){
             res.render('newpassword',{user_id:userData._id})
         }else{
-            res.error(404)
+            res.status(404).send("Something went wrong")
         }
     }catch(error){
         console.log(error.message)
@@ -207,7 +258,7 @@ const updatePass = async(req,res)=>{
             res.redirect('/admin')
 
         }else{
-            res.error(404)
+           res.status(404).send("Something went wrong")
         }
 
     }catch(error){
@@ -221,13 +272,131 @@ const updatePass = async(req,res)=>{
 
 const showUsers = async(req,res)=>{
     try{
-        res.render('dashboard')
+        const userData = await User.find({is_Admin:0})
+
+        res.render('dashboard',{users:userData})
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
+//add new user via admin dashboard
+
+const addNewUserPage = async(req,res)=>{
+    try{
+        res.render('newuser')
+
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
+//adding new user via admin dashbaord
+
+const addNewUserlogic = async (req, res) => {
+    try {
+        const email = req.body.email
+        const password = req.body.password
+
+        const checkmail = await User.findOne({ email })
+
+        if (checkmail) {
+            return res.render('newuser', {
+                message: 'Email already exists'
+            })
+        }
+
+        const spassword = await securingPassword(password)
+
+        const user = new User({
+            name: req.body.name,
+            email: req.body.email,
+            mobile: req.body.mno,
+            password: spassword,
+            image: req.file ? req.file.filename : null,
+            is_Admin: 0,
+            is_verified: 0
+        })
+
+        const userData = await user.save()
+
+        if (userData) {
+            verificaionMail(userData.name, userData.email, userData._id)
+
+            return res.render('newuser', {
+                message: 'Mail is sent — please verify'
+            })
+        }
+
+        return res.status(404).send("Something went wrong")
+
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+
+
+//edit user
+
+const editUser = async(req,res)=>{
+    try{
+
+        const id = req.query.id
+        const userData = await User.findById({_id:id})
+        if(userData){
+            res.render('edituser',{user:userData})
+        }else{
+        return res.status(404).send("Something went wrong")
+        }
+
     }catch(error){
         console.log(error.message)
     }
 }
 
 
+//update edited user 
+
+const updatingUser = async(req,res)=>{
+    try{
+        const id = req.body.id
+        if(id){
+            const updateUser = await User.findOneAndUpdate({_id:id},{$set:{
+                name:req.body.name,
+                email:req.body.email,
+                mobile:req.body.mobile,
+                is_verified:req.body.verify
+            }})
+            res.redirect('/admin/dashboard')
+        }else{
+        return res.status(404).send("Something went wrong")
+        }
+
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
+
+//deleting user
+
+const deleteUser = async(req,res)=>{
+    try{
+
+        const id = req.query.id
+        if(id){
+            const deleteUser = await User.deleteOne({_id:id})
+                  res.redirect('/admin/dashboard')
+        }else{
+            return res.status(404).send("Something went wrong")
+        }
+
+
+    }catch(error){
+        console.log(error)
+    }
+}
 
 module.exports={
     adminLogin,
@@ -238,9 +407,10 @@ module.exports={
     forgetVerify,
     forgetLogic,
     updatePass,
-    showUsers
-    
-    
-    
-    
+    showUsers,
+    addNewUserPage,
+    addNewUserlogic,
+    editUser,
+    updatingUser,
+    deleteUser   
 }

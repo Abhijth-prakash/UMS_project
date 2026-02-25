@@ -1,0 +1,48 @@
+<%- include("../layouts/header.ejs") %>
+
+<h1>edit user profile</h1>
+
+<img src="userImages/<%=user.image%>"   width="50%" height="300px"   alt="">
+
+<br><br>
+
+<form action="/admin/edituser" method="post" >
+
+  <input type="text" name="name"  value ="<%=user.name%>" placeholder="Enter name" required>
+  <br><br>
+
+  <input type="hidden" name="user_id" value="<%=user._id%>">
+
+ <input type="email" name="email"  value ="<%=user.email%>" placeholder="Enter email" required>
+  <br><br>
+
+
+<label>Verified:</label><br>
+
+<input type="radio"  name="verify" value="1" <% if(user.is_verified ===1 ){ %> checked <% }%>  >
+<label for="verified">Verified</label>
+
+<input type="radio"  name="verify" value="1" <% if(user.is_verified === 0 ){ %> checked <% }%>  >
+<label for="unverified">Unverified</label>
+
+<br><br>
+
+
+
+  <input type="text" name="mobile"  value ="<%=user.mobile%>" placeholder="Enter mobileNo" required>
+  <br><br>
+  <input type="hidden" name="id"  value ="<%=user._id%>" >
+
+  <input type="submit" value="Update">
+
+</form>
+
+<br><br>
+
+<a href="/admin/dashboard">dashboard</a>
+
+<% if (typeof message !== 'undefined') { %>
+  <p style="color:green;"><%= message %></p>
+<% } %>
+
+<%- include("../layouts/footer.ejs") %>
