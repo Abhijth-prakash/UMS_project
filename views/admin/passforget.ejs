@@ -1,27 +1,17 @@
 <%- include("../layouts/header.ejs") %>
 
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
-    <div class="card bg-dark text-white p-4 shadow" style="width: 100%; max-width: 400px;">
+<h1>Forgot Password</h1>
 
-        <h1 class="text-center text-danger fw-bold mb-4">Forgot Password</h1>
+<% if (typeof message !== 'undefined') { %>
+    <h4 style="color:rgb(0, 0, 0);"><%= message %></h4>
+<% } %>
 
-        <% if (typeof message !== 'undefined') { %>
-            <h4 class="text-center text-white bg-danger p-2 rounded"><%= message %></h4>
-        <% } %>
+<form action="/admin/passforget" method="POST">
 
-        <form action="/admin/passforget" method="POST">
+    <input type="email" name="email" placeholder="email" required>
+    <br><br>
+    <input type="submit" value="Reset Link">
 
-            <div class="mb-3">
-                <input type="email" name="email" placeholder="Email" required class="form-control bg-secondary text-white border-0">
-            </div>
-
-            <div class="d-grid mb-3">
-                <input type="submit" value="Reset Link" class="btn btn-danger">
-            </div>
-
-        </form>
-
-    </div>
-</div>
+</form>
 
 <%- include("../layouts/footer.ejs") %>
