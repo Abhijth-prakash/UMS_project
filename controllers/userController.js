@@ -345,24 +345,26 @@ const verificationLogic = async(req,res)=>{
 
 //user profile update
 
-const updatePage = async(req,res)=>{
-        try{
-            const id = req.query.id;
+const updatePage = async (req, res) => {
+    try {
+        const id = req.query.id
+        const userData = await User.findById(id)
 
-            const userData = await User.findById({_id:id});
-            if(userData){
-
-                res.render('edit',{user:userData})
-
-            }else{
-                res.redirect('home')
-            }
-            res.render('edit')
-        }catch(error){
-            console.log(error.message)
-
+        if (userData) {
+            return res.render('edit', { user: userData })
         }
+
+        return res.redirect('/home')
+
+    } catch (error) {
+        console.log(error.message)
+        return res.status(500).send("Server error")
+    }
 }
+
+
+
+//user profile update logic
 
 const updateLogic = async(req,res)=>{
     try{

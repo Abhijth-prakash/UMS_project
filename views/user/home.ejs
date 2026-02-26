@@ -1,40 +1,44 @@
 <%- include("../layouts/header.ejs") %>
 
-
-
-<h1>home page</h1>
-
-
-<h1 style="color:red"> welcome,<%= user.name%> </h1>
-
-<table>
-    <tr>
-        <td><img src="userImages/<%= user.image%>" alt="<%= user.image%>"></td>
-    </tr>
-    <tr>
-        <td>email</td>
-        <td><%= user.email%></td>
-    </tr>
-    <tr>
-        <td>mobile</td>
-        <td><%= user.mobile%>></td>
-    </tr>
-    <tr>
-        <td>Verified</td>
-        <td><% if(user.is_verified === 1){
-            %>
-            <p>True</p>
-            <%
-        }%></td>
-    </tr>
-</table>
-
-
-<a href="/edit?id=<%=user._id%>">Edit</a>
 <br><br>
-<a href="/logout">Logout</a>
 
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+    <div class="card bg-dark text-white p-4 shadow" style="width: 100%; max-width: 500px;">
 
+        <h1 class="text-center text-danger fw-bold mb-2">Home Page</h1>
+        <h4 class="text-center text-white mb-4">Welcome, <span class="text-danger"><%= user.name %></span></h4>
 
+        <div class="text-center mb-4">
+            <img src="userImages/<%= user.image %>" alt="<%= user.image %>" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #e94560;">
+        </div>
+
+        <table class="table table-dark table-bordered">
+            <tr>
+                <td class="text-secondary">Email</td>
+                <td><%= user.email %></td>
+            </tr>
+            <tr>
+                <td class="text-secondary">Mobile</td>
+                <td><%= user.mobile %></td>
+            </tr>
+            <tr>
+                <td class="text-secondary">Verified</td>
+                <td>
+                    <% if(user.is_verified === 1){ %>
+                        <span class="badge bg-success">True</span>
+                    <% } else { %>
+                        <span class="badge bg-danger">False</span>
+                    <% } %>
+                </td>
+            </tr>
+        </table>
+
+        <div class="d-grid gap-2 mt-3">
+            <a href="/edit?id=<%= user._id %>" class="btn btn-danger">Edit Profile</a>
+            <a href="/logout" class="btn btn-outline-secondary">Logout</a>
+        </div>
+
+    </div>
+</div>
 
 <%- include("../layouts/footer.ejs") %>

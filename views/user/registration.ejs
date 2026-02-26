@@ -1,30 +1,45 @@
 <%- include("../layouts/header.ejs") %>
 
-<h1>User Registration</h1>
+<br><br>
 
-<form action="/register" method="post" enctype="multipart/form-data">
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+    <div class="card bg-dark text-white p-4 shadow" style="width: 100%; max-width: 400px;">
 
-  <input type="text" name="name" placeholder="name" required>
-  <br><br>
+        <h1 class="text-center text-danger fw-bold mb-4">User Registration</h1>
 
-  <input type="email" name="email" placeholder="email" required>
-  <br><br>
+        <% if (typeof message !== 'undefined') { %>
+            <h4 class="text-center text-white bg-success p-2 rounded"><%= message %></h4>
+        <% } %>
 
-  <input type="number" name="mno" placeholder="mobile" required>
-  <br><br>
+        <form action="/register" method="post" enctype="multipart/form-data">
 
-  <input type="file" name="image" required>
-  <br><br>
+            <div class="mb-3">
+                <input type="text" name="name" placeholder="Name" required class="form-control bg-secondary text-white border-0">
+            </div>
 
-  <input type="password" name="password" placeholder="password" required>
-  <br><br>
+            <div class="mb-3">
+                <input type="email" name="email" placeholder="Email" required class="form-control bg-secondary text-white border-0">
+            </div>
 
-  <input type="submit" value="Register">
+            <div class="mb-3">
+                <input type="number" name="mno" placeholder="Mobile" required class="form-control bg-secondary text-white border-0">
+            </div>
 
-</form>
+            <div class="mb-3">
+                <input type="file" name="image" required class="form-control bg-secondary text-white border-0">
+            </div>
 
-<% if (typeof message !== 'undefined') { %>
-  <p style="color:green;"><%= message %></p>
-<% } %>
+            <div class="mb-3">
+                <input type="password" name="password" placeholder="Password" required class="form-control bg-secondary text-white border-0">
+            </div>
+
+            <div class="d-grid mb-3">
+                <input type="submit" value="Register" class="btn btn-danger">
+            </div>
+
+        </form>
+
+    </div>
+</div>
 
 <%- include("../layouts/footer.ejs") %>

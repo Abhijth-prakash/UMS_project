@@ -1,23 +1,31 @@
 <%- include("../layouts/header.ejs") %>
 
-<h1>verify email</h1>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+    <div class="card bg-dark text-white p-4 shadow" style="width: 100%; max-width: 400px;">
 
+        <h1 class="text-center text-danger fw-bold mb-4">Verify Email</h1>
 
+        <% if (typeof message !== 'undefined') { %>
+            <h4 class="text-center text-white bg-danger p-2 rounded"><%= message %></h4>
+        <% } %>
 
-<% if (typeof message !== 'undefined') { %>
-  <h4 style="color:rgb(0, 0, 0);"><%= message %></h4>
-<% } %>
+        <form action="" method="post">
 
-<form action="" method="post">
+            <div class="mb-3">
+                <input type="email" name="email" placeholder="Email" required class="form-control bg-secondary text-white border-0">
+            </div>
 
-    <input type="email" name="email"  placeholder="email" required>
-    <br><br>
-    <input type="password" name="password" placeholder="password" required>
-    <br><br>
-    <input type="submit" value="Verify">
-</form>
+            <div class="mb-3">
+                <input type="password" name="password" placeholder="Password" required class="form-control bg-secondary text-white border-0">
+            </div>
 
+            <div class="d-grid mb-3">
+                <input type="submit" value="Verify" class="btn btn-danger">
+            </div>
 
+        </form>
 
+    </div>
+</div>
 
 <%- include("../layouts/footer.ejs") %>

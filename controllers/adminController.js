@@ -360,7 +360,8 @@ const editUser = async(req,res)=>{
 
 const updatingUser = async(req,res)=>{
     try{
-        const id = req.body.id
+        const id = req.query.id
+        console.log('id')
         if(id){
             const updateUser = await User.findOneAndUpdate({_id:id},{$set:{
                 name:req.body.name,

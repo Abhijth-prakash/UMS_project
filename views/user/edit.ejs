@@ -1,32 +1,46 @@
 <%- include("../layouts/header.ejs") %>
+<br><br>
 
-<h1>Update profile</h1>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+    <div class="card bg-dark text-white p-4 shadow" style="width: 100%; max-width: 400px;">
 
-<img src="userImages/<%=user.image%>" alt="">
+        <h1 class="text-center text-danger fw-bold mb-4">Update Profile</h1>
 
-<form action="/edit" method="post" enctype="multipart/form-data">
+        <div class="text-center mb-4">
+            <img src="userImages/<%= user.image %>" alt="profile" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #e94560;">
+        </div>
 
-  <input type="text" name="name"  value ="<%=user.name%>" placeholder="Enter name" required>
-  <br><br>
+        <% if (typeof message !== 'undefined') { %>
+            <h4 class="text-center text-white bg-success p-2 rounded"><%= message %></h4>
+        <% } %>
 
-  <input type="hidden" name="user_id" value="<%=user._id%>">
+        <form action="/edit" method="post" enctype="multipart/form-data">
 
- <input type="email" name="email"  value ="<%=user.email%>" placeholder="Enter email" required>
-  <br><br>
+            <input type="hidden" name="user_id" value="<%= user._id %>">
 
-  <input type="text" name="mobile"  value ="<%=user.mobile%>" placeholder="Enter mobileNo" required>
-  <br><br>
+            <div class="mb-3">
+                <input type="text" name="name" value="<%= user.name %>" placeholder="Enter Name" required class="form-control bg-secondary text-white border-0">
+            </div>
 
-  <input type="file" name="image" required>
-  <br><br>
+            <div class="mb-3">
+                <input type="email" name="email" value="<%= user.email %>" placeholder="Enter Email" required class="form-control bg-secondary text-white border-0">
+            </div>
 
+            <div class="mb-3">
+                <input type="text" name="mobile" value="<%= user.mobile %>" placeholder="Enter Mobile No" required class="form-control bg-secondary text-white border-0">
+            </div>
 
-  <input type="submit" value="Update">
+            <div class="mb-3">
+                <input type="file" name="image" class="form-control bg-secondary text-white border-0">
+            </div>
 
-</form>
+            <div class="d-grid mb-3">
+                <input type="submit" value="Update" class="btn btn-danger">
+            </div>
 
-<% if (typeof message !== 'undefined') { %>
-  <p style="color:green;"><%= message %></p>
-<% } %>
+        </form>
+
+    </div>
+</div>
 
 <%- include("../layouts/footer.ejs") %>

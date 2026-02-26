@@ -1,32 +1,38 @@
 <%- include("../layouts/header.ejs") %>
 
-<h1>login</h1>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+    <div class="card bg-dark text-white p-4 shadow" style="width: 100%; max-width: 400px;">
+        
+        <h1 class="text-center text-danger fw-bold mb-4">Login</h1>
 
+        <% if (typeof message !== 'undefined') { %>
+            <h4 class="text-center text-white bg-danger p-2 rounded"><%= message %></h4>
+        <% } %>
 
+        <form action="/login" method="post">
 
-<% if (typeof message !== 'undefined') { %>
-  <h4 style="color:rgb(0, 0, 0);"><%= message %></h4>
-<% } %>
+            <div class="mb-3">
+                <input type="email" name="email" placeholder="Email" required class="form-control bg-secondary text-white border-0">
+            </div>
 
-<form action="/login" method="post">
+            <div class="mb-3">
+                <input type="password" name="password" placeholder="Password" required class="form-control bg-secondary text-white border-0">
+            </div>
 
-    <input type="email" name="email"  placeholder="email" required>
-    <br><br>
-    <input type="password" name="password" placeholder="password" required>
-    <br><br>
-    <input type="submit" value="Login">
-</form>
+            <div class="d-grid mb-3">
+                <input type="submit" value="Login" class="btn btn-danger">
+            </div>
 
-<a href="/forget"> forget password</a> 
-<br><br>
-<a href="/verification">verification</a> 
+        </form>
 
+        <div class="text-center">
+            <a href="/forget" class="text-secondary text-decoration-none">Forgot Password?</a>
+        </div>
+        <div class="text-center mt-2">
+            <a href="/verification" class="text-secondary text-decoration-none">Verification</a>
+        </div>
 
-
-
-
-
-
-
+    </div>
+</div>
 
 <%- include("../layouts/footer.ejs") %>
