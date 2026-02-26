@@ -342,7 +342,7 @@ const addNewUserlogic = async (req, res) => {
 const editUser = async(req,res)=>{
     try{
 
-        const id = req.query.id
+        console.log(id)
         const userData = await User.findById({_id:id})
         if(userData){
             res.render('edituser',{user:userData})
@@ -360,8 +360,7 @@ const editUser = async(req,res)=>{
 
 const updatingUser = async(req,res)=>{
     try{
-        const id = req.query.id
-        console.log('id')
+        const id = req.body.id
         if(id){
             const updateUser = await User.findOneAndUpdate({_id:id},{$set:{
                 name:req.body.name,

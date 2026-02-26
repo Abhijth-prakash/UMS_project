@@ -1,48 +1,60 @@
 <%- include("../layouts/header.ejs") %>
-
-<h1>edit user profile</h1>
-
-<img src="userImages/<%=user.image%>"   width="50%" height="300px"   alt="">
-
 <br><br>
 
-<form action="/admin/edituser" method="post" >
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+    <div class="card bg-dark text-white p-4 shadow" style="width: 100%; max-width: 400px;">
 
-  <input type="text" name="name"  value ="<%=user.name%>" placeholder="Enter name" required>
-  <br><br>
+        <h1 class="text-center text-danger fw-bold mb-4">Edit User Profile</h1>
 
-  <input type="hidden" name="user_id" value="<%=user._id%>">
+        <div class="text-center mb-4">
+            <img src="userImages/<%= user.image %>" alt="user" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #e94560;">
+        </div>
 
- <input type="email" name="email"  value ="<%=user.email%>" placeholder="Enter email" required>
-  <br><br>
+        <% if (typeof message !== 'undefined') { %>
+            <h4 class="text-center text-white bg-success p-2 rounded"><%= message %></h4>
+        <% } %>
 
+        <form action="/admin/edituser" method="post">
 
-<label>Verified:</label><br>
+            <input type="hidden" name="id" value="<%= user._id %>">
 
-<input type="radio"  name="verify" value="1" <% if(user.is_verified ===1 ){ %> checked <% }%>  >
-<label for="verified">Verified</label>
+            <div class="mb-3">
+                <input type="text" name="name" value="<%= user.name %>" placeholder="Enter Name" required class="form-control bg-secondary text-white border-0">
+            </div>
 
-<input type="radio"  name="verify" value="1" <% if(user.is_verified === 0 ){ %> checked <% }%>  >
-<label for="unverified">Unverified</label>
+            <div class="mb-3">
+                <input type="email" name="email" value="<%= user.email %>" placeholder="Enter Email" required class="form-control bg-secondary text-white border-0">
+            </div>
 
-<br><br>
+            <div class="mb-3">
+                <input type="text" name="mobile" value="<%= user.mobile %>" placeholder="Enter Mobile No" required class="form-control bg-secondary text-white border-0">
+            </div>
 
+            <div class="mb-3">
+                <label class="text-secondary mb-2">Verified Status:</label>
+                <div class="d-flex gap-4">
+                    <div class="form-check">
+                        <input type="radio" name="verify" value="1" class="form-check-input" <% if(user.is_verified === 1){ %> checked <% } %>>
+                        <label class="form-check-label text-success">Verified</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" name="verify" value="0" class="form-check-input" <% if(user.is_verified === 0){ %> checked <% } %>>
+                        <label class="form-check-label text-danger">Unverified</label>
+                    </div>
+                </div>
+            </div>
 
+            <div class="d-grid mb-3">
+                <input type="submit" value="Update" class="btn btn-danger">
+            </div>
 
-  <input type="text" name="mobile"  value ="<%=user.mobile%>" placeholder="Enter mobileNo" required>
-  <br><br>
-  <input type="hidden" name="id"  value ="<%=user._id%>" >
+        </form>
 
-  <input type="submit" value="Update">
+        <div class="text-center">
+            <a href="/admin/dashboard" class="btn btn-outline-secondary w-100">Dashboard</a>
+        </div>
 
-</form>
-
-<br><br>
-
-<a href="/admin/dashboard">dashboard</a>
-
-<% if (typeof message !== 'undefined') { %>
-  <p style="color:green;"><%= message %></p>
-<% } %>
+    </div>
+</div>
 
 <%- include("../layouts/footer.ejs") %>

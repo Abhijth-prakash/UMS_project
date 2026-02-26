@@ -1,37 +1,31 @@
 <%- include("../layouts/header.ejs") %>
 
-<h1><%= admin.name%></h1>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+    <div class="card bg-dark text-white p-4 shadow" style="width: 100%; max-width: 500px;">
 
+        <h1 class="text-center text-danger fw-bold mb-2"><%= admin.name %></h1>
 
-<a href="/admin/dashboard">dashboard</a>
+        <div class="text-center mb-4">
+            <img src="/userImages/<%= admin.image %>" alt="admin" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #e94560;">
+        </div>
 
-<br>
+        <table class="table table-dark table-bordered">
+            <tr>
+                <td class="text-secondary">Email</td>
+                <td><%= admin.email %></td>
+            </tr>
+            <tr>
+                <td class="text-secondary">Mobile</td>
+                <td><%= admin.mobile %></td>
+            </tr>
+        </table>
 
+        <div class="d-grid gap-2 mt-3">
+            <a href="/admin/dashboard" class="btn btn-danger">Dashboard</a>
+            <a href="logout" class="btn btn-outline-secondary">Logout</a>
+        </div>
 
-<table style=" width: 50%">
-
-    <tr>
-        <td>
-            <img src="/userImages/<%= admin.image %>" width="100px" height="100px">
-        </td>
-    </tr>
-
-    <tr>
-        <td>Email</td>
-        <td><%= admin.email %></td>
-    </tr>
-    <tr>
-        <td>Mobile</td>
-        <td><%= admin.mobile %></td>
-    </tr>
-
-</table>
-
-
-
-
-<a href="logout">logout</a>
-
-
+    </div>
+</div>
 
 <%- include("../layouts/footer.ejs") %>

@@ -1,35 +1,47 @@
 <%- include("../layouts/header.ejs") %>
 
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+    <div class="card bg-dark text-white p-4 shadow" style="width: 100%; max-width: 400px;">
 
-<h1>this is new user page</h1>
+        <h1 class="text-center text-danger fw-bold mb-4">Add New User</h1>
 
-<form action="/admin/newuser" method="post" enctype="multipart/form-data">
+        <% if (typeof message !== 'undefined') { %>
+            <h4 class="text-center text-white bg-danger p-2 rounded"><%= message %></h4>
+        <% } %>
 
-  <input type="text" name="name" placeholder="name" required>
-  <br><br>
+        <form action="/admin/newuser" method="post" enctype="multipart/form-data">
 
-  <input type="email" name="email" placeholder="email" required>
-  <br><br>
+            <div class="mb-3">
+                <input type="text" name="name" placeholder="Name" required class="form-control bg-secondary text-white border-0">
+            </div>
 
-  <input type="number" name="mno" placeholder="mobile" required>
-  <br><br>
+            <div class="mb-3">
+                <input type="email" name="email" placeholder="Email" required class="form-control bg-secondary text-white border-0">
+            </div>
 
-  <input type="file" name="image" required>
-  <br><br>
+            <div class="mb-3">
+                <input type="number" name="mno" placeholder="Mobile" required class="form-control bg-secondary text-white border-0">
+            </div>
 
-  <input type="password" name="password" placeholder="password" required>
-  <br><br>
+            <div class="mb-3">
+                <input type="file" name="image" required class="form-control bg-secondary text-white border-0">
+            </div>
 
-  <input type="submit" value="Add user">
+            <div class="mb-3">
+                <input type="password" name="password" placeholder="Password" required class="form-control bg-secondary text-white border-0">
+            </div>
 
-</form>
+            <div class="d-grid mb-3">
+                <input type="submit" value="Add User" class="btn btn-danger">
+            </div>
 
-<a href="/admin/dashboard">dashboard</a>
+        </form>
 
+        <div class="text-center">
+            <a href="/admin/dashboard" class="btn btn-outline-secondary w-100">Dashboard</a>
+        </div>
 
-<% if (typeof message !== 'undefined') { %>
-  <h4 style="color:rgb(255, 0, 0);"><%= message %></h4>
-<% } %>
-
+    </div>
+</div>
 
 <%- include("../layouts/footer.ejs") %>
