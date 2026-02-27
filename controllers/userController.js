@@ -72,21 +72,28 @@ const loadRegister = async(req,res)=>{
 const insertUser = async(req,res)=>{
     try{
         const spassword = await securePassword(req.body.password);
-        const user = new User({
-            name:req.body.name,
-            email:req.body.email,
-            mobile:req.body.mno,
-            password: spassword,
-            image:req.file.filename,
-            is_Admin:0,
-            is_verified:0
-        });
-        const userData = await user.save();
-        if(userData){
-           sendVerifyMail(req.body.name, req.body.email, userData._id);
-            res.render("registration",{message:"registration succesully, please verify email"})
+        const emailCheck = await User.findOne({email:req.body.email})
+
+        if(emailCheck){
+            res.render("registration",{message:"email already exists"})
         }else{
-            res.render("registration",{message:"registration failed"})
+            const user = new User({
+                name:req.body.name,
+                email:req.body.email,
+                mobile:req.body.mno,
+                password: spassword,
+                image:req.file.filename,
+                is_Admin:0,
+                is_verified:0
+            });
+            const userData = await user.save();
+
+            if(userData){
+                sendVerifyMail(req.body.name, req.body.email, userData._id);
+                res.render("registration",{message:"registration succesully, please verify email"})
+            }else{
+                res.status(404).send("Something went wrong")
+            }
         }
 
     }catch(error){
