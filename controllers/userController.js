@@ -388,7 +388,7 @@ const updateLogic = async(req,res)=>{
 
         }else{
            const userData = await User.findByIdAndUpdate({_id:req.body.user_id},
-                {$set:{name:req.body.name,email:req.body.name,mobile:req.body.mobile}
+                {$set:{name:req.body.name,email:req.body.email,mobile:req.body.mobile}
             })
         }
         res.redirect('/home')

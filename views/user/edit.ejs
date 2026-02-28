@@ -14,20 +14,21 @@
             <h4 class="text-center text-white bg-success p-2 rounded"><%= message %></h4>
         <% } %>
 
-        <form action="/edit" method="post" enctype="multipart/form-data">
+        <div id="error" class="text-danger mb-2"></div>
+        <form id="form" action="/edit" method="post" enctype="multipart/form-data">
 
             <input type="hidden" name="user_id" value="<%= user._id %>">
 
             <div class="mb-3">
-                <input type="text" name="name" value="<%= user.name %>" placeholder="Enter Name" required class="form-control bg-secondary text-white border-0">
+                <input id="name" type="text" name="name" value="<%= user.name %>" placeholder="Enter Name" required class="form-control bg-secondary text-white border-0">
             </div>
 
             <div class="mb-3">
-                <input type="email" name="email" value="<%= user.email %>" placeholder="Enter Email" required class="form-control bg-secondary text-white border-0">
+                <input id="email" type="email" name="email" value="<%= user.email %>" placeholder="Enter Email" required class="form-control bg-secondary text-white border-0">
             </div>
 
             <div class="mb-3">
-                <input type="text" name="mobile" value="<%= user.mobile %>" placeholder="Enter Mobile No" required class="form-control bg-secondary text-white border-0">
+                <input id="mobile" type="text" name="mobile" value="<%= user.mobile %>" placeholder="Enter Mobile No" required class="form-control bg-secondary text-white border-0">
             </div>
 
             <div class="mb-3">
@@ -42,5 +43,9 @@
 
     </div>
 </div>
+
+
+<script src="/script.js"></script>
+
 
 <%- include("../layouts/footer.ejs") %>

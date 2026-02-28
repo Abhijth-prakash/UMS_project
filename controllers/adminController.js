@@ -59,7 +59,6 @@ const verificaionMail = async(name,email,user_id)=>{
 }
 
 //reset password mail
-
 const passwordMail = async(name,email,token)=>{
     try{
         const transporter = nodemailer.createTransport({

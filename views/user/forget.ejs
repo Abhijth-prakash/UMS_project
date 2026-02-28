@@ -9,10 +9,12 @@
             <h4 class="text-center text-white bg-danger p-2 rounded"><%= message %></h4>
         <% } %>
 
-        <form action="/forget" method="post">
+
+            <div id="error" class="text-danger mb-2"></div>
+        <form id="form" action="/forget" method="post">
 
             <div class="mb-3">
-                <input type="email" name="email" placeholder="Email" required class="form-control bg-secondary text-white border-0">
+                <input id="email" type="email" name="email" placeholder="Email" required class="form-control bg-secondary text-white border-0">
             </div>
 
             <div class="d-grid mb-3">
@@ -23,5 +25,7 @@
 
     </div>
 </div>
+
+<script src="/script.js"></script>
 
 <%- include("../layouts/footer.ejs") %>

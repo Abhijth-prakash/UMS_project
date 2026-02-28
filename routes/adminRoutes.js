@@ -15,7 +15,6 @@ adminRoutes.use(bodyParser.json());
 adminRoutes.use(bodyParser.urlencoded({ extended: true }));
 
 
-
 //set up view engine
 adminRoutes.set('view engine','ejs'),
 adminRoutes.set('views','./views/admin')
