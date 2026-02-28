@@ -19,14 +19,14 @@ adminRoutes.use(bodyParser.urlencoded({ extended: true }));
 adminRoutes.set('view engine','ejs'),
 adminRoutes.set('views','./views/admin')
 
+//admin login
+adminRoutes.get("/",adminController.adminLogin)
+adminRoutes.post("/",adminController.verifyLogin)
+
 
 //home,dashboard
 adminRoutes.get('/home',auth.isLogin,adminController.dashBoard)
 adminRoutes.get('/dashboard',auth.isLogin,adminController.showUsers)
-
-//admin login
-adminRoutes.get("/",auth.isLogout,adminController.adminLogin)
-adminRoutes.post("/",adminController.verifyLogin)
 
 
 //admin logout

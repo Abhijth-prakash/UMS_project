@@ -58,6 +58,8 @@ const verificaionMail = async(name,email,user_id)=>{
     }
 }
 
+
+
 //reset password mail
 const passwordMail = async(name,email,token)=>{
     try{
@@ -137,7 +139,8 @@ const verifyLogin = async(req,res)=>{
                     res.render('login',{message:"Email and password is incorrect"})
             }else{
                 req.session.user_id = userData._id
-                 res.redirect('/admin/home')
+                req.session.is_Admin = true;
+                res.redirect('/admin/home')
             }
                 
         }else{
@@ -166,13 +169,16 @@ const logout = async(req,res)=>{
     }
 }
 
-//Admin Dashboard
+
+
+//Admin homepgae
 
 
 const dashBoard = async(req,res)=>{
     try{
 
         const userData = await User.findById({_id:req.session.user_id})
+        console.log(userData)
         res.render('home',{admin:userData})
     }catch(error){
         console.log(error.message)
@@ -338,7 +344,7 @@ const addNewUserlogic = async (req, res) => {
 const editUser = async(req,res)=>{
     try{
 
-        console.log(id)
+        const id = req.query.id
         const userData = await User.findById({_id:id})
         if(userData){
             res.render('edituser',{user:userData})
