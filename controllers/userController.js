@@ -4,6 +4,9 @@ const nodemailer = require('nodemailer')
 const config = require("../config/secretconfig")
 const randomString = require('randomstring')
 
+
+
+
 //verification mail
 
 const sendVerifyMail = async(name,email,user_id)=>{
@@ -56,6 +59,8 @@ const securePassword = async(password)=>{
     }
 }
 
+
+//registeration  page
 const loadRegister = async(req,res)=>{
     try{
 
