@@ -77,10 +77,14 @@ const loadRegister = async(req,res)=>{
 const insertUser = async(req,res)=>{
     try{
         const spassword = await securePassword(req.body.password);
-        const emailCheck = await User.findOne({email:req.body.email})
+        const emailCheck = await User.findOne({$or:[{email:req.body.email},{name:req.body.name}]})
 
         if(emailCheck){
-            res.render("registration",{message:"email already exists"})
+            if(emailCheck.email === req.body.email){
+                res.render("registration",{message:"Email already exists"})
+            }else{
+                res.render("registration",{message:"Username already exists"})
+            }
         }else{
             const user = new User({
                 name:req.body.name,

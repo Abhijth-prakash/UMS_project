@@ -271,7 +271,7 @@ const updatePass = async(req,res)=>{
 
 const showUsers = async(req,res)=>{
     try{
-        const userData = await User.find({is_Admin:0})
+        const userData = await User.find({is_Admin:0}).sort({_id:-1})
 
         res.render('dashboard',{users:userData})
     }catch(error){
@@ -296,44 +296,41 @@ const addNewUserlogic = async (req, res) => {
     try {
         const email = req.body.email
         const password = req.body.password
+        const emailCheck = await User.findOne({$or:[{email:email},{name:req.body.name}]})
 
-        const checkmail = await User.findOne({ email })
+        if (emailCheck) {
+            if(emailCheck.email === req.body.email){
+                res.render("registration",{message:"Email already exists"})
+            }else{
+                res.render("registration",{message:"Username already exists"})
+            }
+        } else {
+            const spassword = await securingPassword(password)
 
-        if (checkmail) {
-            return res.render('newuser', {
-                message: 'Email already exists'
+            const user = new User({
+                name: req.body.name,
+                email: req.body.email,
+                mobile: req.body.mno,
+                password: spassword,
+                image: req.file ? req.file.filename : null,
+                is_Admin: 0,
+                is_verified: 0
             })
+
+            const userData = await user.save()
+
+            if (userData) {
+                verificaionMail(userData.name, userData.email, userData._id)
+                return res.render('newuser', { message: 'Mail is sent — please verify' })
+            }
+
+            return res.status(404).send("Something went wrong")
         }
-
-        const spassword = await securingPassword(password)
-
-        const user = new User({
-            name: req.body.name,
-            email: req.body.email,
-            mobile: req.body.mno,
-            password: spassword,
-            image: req.file ? req.file.filename : null,
-            is_Admin: 0,
-            is_verified: 0
-        })
-
-        const userData = await user.save()
-
-        if (userData) {
-            verificaionMail(userData.name, userData.email, userData._id)
-
-            return res.render('newuser', {
-                message: 'Mail is sent — please verify'
-            })
-        }
-
-        return res.status(404).send("Something went wrong")
 
     } catch (error) {
         console.log(error.message)
     }
 }
-
 
 
 //edit user

@@ -8,6 +8,11 @@ const port = 3000
 //mongodb connection
 db.connection()
 
+//clearing cache
+app.use((req, res, next) => {
+    res.set('Cache-Control', 'no-store')
+    next()
+})
 
 //user Routes
 const userRoutes = require("./routes/userRoutes")

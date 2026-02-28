@@ -1,9 +1,8 @@
-const isLogin =async(req,res,next)=>{
-    if(req.session.user_id){
-        next();
+const isLogin = async(req, res, next) => {
+    if(req.session.user_id && req.session.is_Admin){
+        next()
     }else{
-        res.redirect('/admin');
-
+        res.redirect('/admin')
     }
 }
 const isLogout =async(req,res,next)=>{
